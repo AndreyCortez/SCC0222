@@ -1,67 +1,32 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#define BUFFER_SIZE 100
-
-char wrap(char c, int num_lin, int num_col)
+int main(void)
 {
-    // printf("%d %d\n", num_lin, num_col);
-    if (!isalpha(c))
-    {
-        return c;
-    }
-    int aux = (c + num_lin) * (num_col);
-    if (islower(c))
-    {
-        return 97 + ((aux - 97) % (123 - 97));
-    }
-    else
-    {
-        return 65 + ((aux - 65) % (91 - 65));
-    }
-}
+    int numero_caracter = 1, numero_linha = 1;
+    char caracter;
 
-int main()
-{
-    char buffer[BUFFER_SIZE][BUFFER_SIZE];
-    char line[BUFFER_SIZE];
-    int line_index = 0;
-    int buffer_index = 0;
-    int line_char[BUFFER_SIZE];
-    int num_char = 0;
-    char c;
-    while (1)
+    while ((caracter = getchar()) != EOF)
     {
-        c = getchar();
-        if (c == EOF)
+        int novo_caracter = caracter;
+
+        if (caracter == '\n')
         {
-            break;
+            numero_linha++;
+            numero_caracter = 0;
         }
-        if (c == '\n')
+        else if (isupper(caracter))
         {
-            line[buffer_index] = line_index;
-            line_char[buffer_index] = num_char;
-            num_char = 0;
-            line_index = 0;
-            buffer_index += 1;
+            novo_caracter = ((caracter + numero_caracter) * numero_linha) % 26 + 'A';
         }
-        else
+        else if (islower(caracter))
         {
-            buffer[buffer_index][line_index] = c;
-            if (isalpha(c))
-            {
-                num_char += 1;
-            }
-            line_index += 1;
+            novo_caracter = ((caracter + numero_caracter) * numero_linha) % 26 + 'a';
         }
+
+        numero_caracter++;
+        printf("%c", novo_caracter);
     }
 
-    for (int i = 0; i < buffer_index; i++)
-    {
-        for (int j = 0; j < line[i]; j++)
-        {
-            printf("%c", wrap(buffer[i][j], line_char[i], buffer_index));
-        }
-        printf("\n");
-    }
+    return 0;
 }

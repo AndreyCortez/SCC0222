@@ -18,18 +18,18 @@ int main()
         {
             break;
         }
-        if (c == '\n')
+        if (c == '\n' || c == '\r')
         {
             line_index = 0;
-            if (last_char != '\n')
+            if (last_char != '\n' && last_char != '\r' && last_char != ' ')
             {
                 num_words += 1;
             };
-            buffer_index += 1;
+            buffer_index += 1 * (c != '\r');
         }
         else
         {
-            if (!isblank(c))
+            if (isalnum(c) || ispunct(c))
             {
                 num_char += 1;
             }
